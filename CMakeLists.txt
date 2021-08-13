@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.0)
+
+project(ttgen C)
+
+set(CMAKE_C_STANDARD 99)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+
+# Suppress Visual Studio deprecation warnings.
+if(MSVC)
+	add_definitions(-D _CRT_SECURE_NO_WARNINGS)
+endif(MSVC)
+
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+add_subdirectory(src)
+
+if(BUILD_TESTING)
+	enable_testing()
+	add_subdirectory(test)
+endif(BUILD_TESTING)
