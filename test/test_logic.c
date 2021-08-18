@@ -50,6 +50,13 @@ void test_tokenize_should_handle_single_right_parenthesis(void)
 	TEST_ASSERT_EQUAL_STRING(")", list->back->data);
 }
 
+void test_tokenize_should_handle_single_semicolon(void)
+{
+	list = tokenize(";");
+	TEST_ASSERT_EQUAL(1, List_length(list));
+	TEST_ASSERT_EQUAL_STRING(";", list->back->data);
+}
+
 void test_tokenize_should_remove_whitespaces_if_single_word(void)
 {
 	list = tokenize(" \t  foo\n  \r\v");
@@ -76,6 +83,13 @@ void test_tokenize_should_remove_whitespaces_if_single_right_parenthesis(void)
 	list = tokenize("\r )\t \n\v");
 	TEST_ASSERT_EQUAL(1, List_length(list));
 	TEST_ASSERT_EQUAL_STRING(")", list->back->data);
+}
+
+void test_tokenize_should_remove_whitespaces_if_single_semicolon(void)
+{
+	list = tokenize("\r\r \v \t;\t\n");
+	TEST_ASSERT_EQUAL(1, List_length(list));
+	TEST_ASSERT_EQUAL_STRING(";", list->back->data);
 }
 
 void test_tokenize_should_handle_multiple_words(void)
@@ -135,6 +149,36 @@ void test_tokenize_should_return_empty_list_if_str_contains_only_whitespaces(voi
 	TEST_ASSERT_EQUAL(0, List_length(list));
 }
 
+void test_tokenize_should_handle_expressions_separated_by_semicolons(void)
+{
+	list = tokenize("not foo; foo and bar; baz xor baz;");
+	Node *n = list->front;
+	TEST_ASSERT_NOT_NULL(n);
+	TEST_ASSERT_EQUAL_STRING("not", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING("foo", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING(";", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING("foo", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING("and", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING("bar", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING(";", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING("baz", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING("xor", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING("baz", n->data);
+	n = n->next;
+	TEST_ASSERT_EQUAL_STRING(";", n->data);
+	n = n->next;
+	TEST_ASSERT_NULL(n);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -143,15 +187,18 @@ int main(void)
 	RUN_TEST(test_tokenize_should_handle_single_integer);
 	RUN_TEST(test_tokenize_should_handle_single_left_parenthesis);
 	RUN_TEST(test_tokenize_should_handle_single_right_parenthesis);
+	RUN_TEST(test_tokenize_should_handle_single_semicolon);
 	RUN_TEST(test_tokenize_should_remove_whitespaces_if_single_word);
 	RUN_TEST(test_tokenize_should_remove_whitespaces_if_single_integer);
 	RUN_TEST(test_tokenize_should_remove_whitespaces_if_single_left_parenthesis);
 	RUN_TEST(test_tokenize_should_remove_whitespaces_if_single_right_parenthesis);
+	RUN_TEST(test_tokenize_should_remove_whitespaces_if_single_semicolon);
 	RUN_TEST(test_tokenize_should_handle_multiple_words);
 	RUN_TEST(test_tokenize_should_handle_multiple_integers);
 	RUN_TEST(test_tokenize_should_handle_integer_immediately_followed_by_word);
 	RUN_TEST(test_tokenize_should_treat_each_parenthesis_as_separate_token);
 	RUN_TEST(test_tokenize_should_handle_word_surrounded_by_parentheses);
 	RUN_TEST(test_tokenize_should_return_empty_list_if_str_contains_only_whitespaces);
+	RUN_TEST(test_tokenize_should_handle_expressions_separated_by_semicolons);
 	return UNITY_END();
 }

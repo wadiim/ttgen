@@ -36,6 +36,11 @@ List * tokenize(const char *str)
 			List_push_back(tokens, ")");
 			++idx;
 		}
+		else if (str[idx] == ';')
+		{
+			List_push_back(tokens, ";");
+			++idx;
+		}
 		else
 		{
 			++idx;
