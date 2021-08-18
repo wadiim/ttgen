@@ -11,6 +11,7 @@ List * tokenize(const char *str)
 	size_t token_len = 0;
 	const char *token_start = NULL;
 	List *tokens = List_new();
+	if (tokens == NULL) return NULL;
 
 	size_t idx = 0;
 	size_t str_len = strlen(str);
@@ -38,8 +39,9 @@ List * tokenize(const char *str)
 				|| str[idx] == ';')
 		{
 			char *t = char_to_str(str[idx]);
-			List_push_back(tokens, t);
+			int ret = List_push_back(tokens, t);
 			free(t);
+			if (ret) return NULL;
 			++idx;
 		}
 		else
@@ -49,7 +51,11 @@ List * tokenize(const char *str)
 
 		if (token_len)
 		{
-			List_push_back_n(tokens, token_start, token_len);
+			if (List_push_back_n(tokens,
+					token_start, token_len))
+			{
+				return NULL;
+			}
 		}
 	}
 
