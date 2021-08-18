@@ -5,7 +5,7 @@
 
 /*
  * Tokenizes the 'str' string.
- * The tokens are: '(', ')', integers, and words (i.e. alphanumeric
+ * The tokens are: '(', ')', ';', integers, and words (i.e. alphanumeric
  * sequences starting with non-digit).
  * Returns a list of tokens on success or NULL on error.
  */
