@@ -1,7 +1,9 @@
 #include "logic.h"
+#include "utils.h"
 
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 
 List * tokenize(const char *str)
@@ -18,27 +20,26 @@ List * tokenize(const char *str)
 		token_start = str + idx;
 		if (isdigit(str[idx]))
 		{
-			while (isdigit(str[idx++])) ++token_len;
-			--idx;
+			while (isdigit(str[idx]))
+			{
+				++token_len;
+				++idx;
+			}
 		}
 		else if (isalpha(str[idx]))
 		{
-			while (isalnum(str[idx++])) ++token_len;
-			--idx;
+			while (isalnum(str[idx]))
+			{
+				++token_len;
+				++idx;
+			}
 		}
-		else if (str[idx] == '(')
+		else if (str[idx] == '(' || str[idx] == ')'
+				|| str[idx] == ';')
 		{
-			List_push_back(tokens, "(");
-			++idx;
-		}
-		else if (str[idx] == ')')
-		{
-			List_push_back(tokens, ")");
-			++idx;
-		}
-		else if (str[idx] == ';')
-		{
-			List_push_back(tokens, ";");
+			char *t = char_to_str(str[idx]);
+			List_push_back(tokens, t);
+			free(t);
 			++idx;
 		}
 		else
