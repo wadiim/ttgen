@@ -61,3 +61,50 @@ List * tokenize(const char *str)
 
 	return tokens;
 }
+
+int get_variables(const List *exp, const Operator ops[],
+		size_t ops_len, Variable **vars, size_t *vars_len)
+{
+	*vars_len = 0;
+	*vars = malloc(16*sizeof(Variable));
+	if (vars == NULL) return -1;
+
+	size_t capacity = 16;
+	size_t idx = 0;
+
+	Node* token = exp->front;
+	bool found;
+	while (token)
+	{
+		found = false;
+		for (size_t i = 0; i < ops_len; ++i)
+		{
+			if (strcmp(token->data, ops[i].name) == 0)
+			{
+				found = true;
+				break;
+			}
+		}
+
+		if (found == false)
+		{
+			if (idx >= capacity-1)
+			{
+				*vars = realloc(*vars,
+						2*capacity*sizeof(Variable));
+				if (*vars == NULL) return -3;
+				capacity *= 2;
+			}
+			(*vars)[idx].name = token->data;
+			(*vars)[idx].value = 0;
+			++idx;
+		}
+
+		token = token->next;
+	}
+	*vars_len = idx;
+	*vars = realloc(*vars, (*vars_len)*sizeof(Variable));
+	if (*vars == NULL) return -4;
+
+	return 0;
+}
