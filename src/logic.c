@@ -108,3 +108,25 @@ int get_variables(const List *exp, const Operator ops[],
 
 	return 0;
 }
+
+bool update_variables(Variable vars[], size_t vars_len)
+{
+	if (vars_len)
+	{
+		bool carry_flag = 0;
+		size_t i = vars_len-1;
+		while (true)
+		{
+			carry_flag = vars[i].value;
+			vars[i].value = !vars[i].value;
+			if (carry_flag == 0) return true;
+			if (i == 0) break;
+			--i;
+		}
+	}
+	// If we got here, then all values were 1.
+	// Reset variables to their initial state.
+	for (size_t i = 0; i < vars_len; ++i) vars[i].value = 1;
+
+	return false;
+}

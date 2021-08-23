@@ -52,4 +52,12 @@ List * tokenize(const char *str);
 int get_variables(const List *exp, const Operator ops[], size_t ops_len,
 		Variable **vars, size_t *vars_len);
 
+/*
+ * Updates the values of 'vars'. This function treats the values as
+ * sequential digits of a binary number and increments that number on
+ * each call. Returns false if that number cannot be further
+ * incremented and true otherwise.
+ */
+bool update_variables(Variable vars[], size_t vars_len);
+
 #endif /* LOGIC_H */
