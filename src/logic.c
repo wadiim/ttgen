@@ -130,3 +130,53 @@ bool update_variables(Variable vars[], size_t vars_len)
 
 	return false;
 }
+
+int split_expression(List *exp, List **exps, size_t *exps_len)
+{
+	*exps = malloc(8*sizeof(List));
+	if (*exps == NULL) return -1;
+	(*exps)[0].front = exp->front;
+	size_t capacity = 8, idx = 0;
+	Node *node = exp->front;
+
+	while (node)
+	{
+		if (strcmp(node->data, ";") == 0)
+		{
+			if (idx + 1 >= capacity - 1)
+			{
+				*exps = realloc(*exps, 2*capacity*sizeof(List));
+				if (*exps == NULL) return -2;
+				capacity *= 2;
+			}
+			
+			if (node == exp->back)
+			{
+				exp->back = exp->back->prev;
+				free(exp->back->next->data);
+				free(exp->back->next);
+				exp->back->next = NULL;
+				node = NULL;
+			}
+			else
+			{
+				(*exps)[idx].back = node->prev;
+				(*exps)[idx+1].front = node->next;
+				node = node->next;
+				free(node->prev->data);
+				free(node->prev);
+				(*exps)[idx].back->next = NULL;
+				(*exps)[idx+1].front->prev = NULL;
+				++idx;
+			}
+		}
+		else
+		{
+			node = node->next;
+		}
+	}
+	(*exps)[idx].back = exp->back;
+	*exps_len = idx + 1;
+
+	return 0;
+}

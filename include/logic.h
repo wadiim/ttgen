@@ -60,4 +60,13 @@ int get_variables(const List *exp, const Operator ops[], size_t ops_len,
  */
 bool update_variables(Variable vars[], size_t vars_len);
 
+/*
+ * Split 'exp' into multiple expressions using the ';' token as a
+ * separator. 'exp' is assumed to be the return value of the 'tokenize'
+ * function. 'exp' should not be used or freed after passing it to this
+ * function. The ';' tokens are excluded from the resulting expressions.
+ * Returns zero on success and non-zero value on error.
+ */
+int split_expression(List *exp, List **exps, size_t *exps_len);
+
 #endif /* LOGIC_H */
