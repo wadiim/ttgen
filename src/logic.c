@@ -135,8 +135,16 @@ int split_expression(List *exp, List **exps, size_t *exps_len)
 {
 	*exps = malloc(8*sizeof(List));
 	if (*exps == NULL) return -1;
-	(*exps)[0].front = exp->front;
 	size_t capacity = 8, idx = 0;
+
+	if (exp && exp->front && strcmp(exp->front->data, ";") == 0)
+	{
+		exp->front = exp->front->next;
+		free(exp->front->prev->data);
+		free(exp->front->prev);
+		exp->front->prev = NULL;
+	}
+	(*exps)[0].front = exp->front;
 	Node *node = exp->front;
 
 	while (node)

@@ -113,6 +113,22 @@ void test_split_expression_should_handle_trailing_separator(void)
 	TEST_ASSERT_EQUAL_STRING("foo", exps[0].back->data);
 }
 
+void test_split_expression_should_handle_precending_separator(void)
+{
+	List_push_back(ex, ";");
+	List_push_back(ex, "foo");
+
+	split_expression(ex, &exps, &exps_size);
+
+	TEST_ASSERT_EQUAL(1, exps_size);
+	TEST_ASSERT_NOT_NULL(exps[0].front);
+	TEST_ASSERT_NOT_NULL(exps[0].back);
+	TEST_ASSERT_EQUAL_PTR(exps[0].front, exps[0].back);
+	TEST_ASSERT_NULL(exps[0].front->prev);
+	TEST_ASSERT_NULL(exps[0].back->next);
+	TEST_ASSERT_EQUAL_STRING("foo", exps[0].back->data);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -122,5 +138,6 @@ int main(void)
 	RUN_TEST(test_split_expression_should_do_shallow_copy_of_list_nodes);
 	RUN_TEST(test_split_expression_if_separators_are_presented);
 	RUN_TEST(test_split_expression_should_handle_trailing_separator);
+	RUN_TEST(test_split_expression_should_handle_precending_separator);
 	return UNITY_END();
 }
