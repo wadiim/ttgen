@@ -18,6 +18,20 @@ void tearDown(void)
 	free(exps);
 }
 
+/*
+ * Checks if the 'exps' array consist of a single expression with a
+ * single token and if its name is 'name'.
+ */
+static void check_if_exps_contains_single_list_with_single_node(const char *name)
+{
+	TEST_ASSERT_EQUAL(1, exps_size);
+	TEST_ASSERT_NOT_NULL(exps[0].front);
+	TEST_ASSERT_NOT_NULL(exps[0].back);
+	TEST_ASSERT_EQUAL_PTR(exps[0].front, exps[0].back);
+	TEST_ASSERT_NOT_NULL(exps[0].back->data);
+	TEST_ASSERT_EQUAL_STRING(name, exps[0].back->data);
+}
+
 void test_split_expression_should_return_0_if_exp_is_empty(void)
 {
 	TEST_ASSERT_EQUAL_INT(0, split_expression(ex, &exps, &exps_size));
@@ -35,12 +49,7 @@ void test_split_expression_should_initialize_exps_to_exp_if_no_separator_present
 {
 	List_push_back(ex, "foo");
 	split_expression(ex, &exps, &exps_size);
-	TEST_ASSERT_EQUAL(1, exps_size);
-	TEST_ASSERT_NOT_NULL(exps[0].front);
-	TEST_ASSERT_NOT_NULL(exps[0].back);
-	TEST_ASSERT_EQUAL_PTR(exps[0].front, exps[0].back);
-	TEST_ASSERT_NOT_NULL(exps[0].back->data);
-	TEST_ASSERT_EQUAL_STRING("foo", exps[0].back->data);
+	check_if_exps_contains_single_list_with_single_node("foo");
 }
 
 void test_split_expression_should_do_shallow_copy_of_list_nodes(void)
@@ -101,32 +110,16 @@ void test_split_expression_should_handle_trailing_separator(void)
 {
 	List_push_back(ex, "foo");
 	List_push_back(ex, ";");
-
 	split_expression(ex, &exps, &exps_size);
-
-	TEST_ASSERT_EQUAL(1, exps_size);
-	TEST_ASSERT_NOT_NULL(exps[0].front);
-	TEST_ASSERT_NOT_NULL(exps[0].back);
-	TEST_ASSERT_EQUAL_PTR(exps[0].front, exps[0].back);
-	TEST_ASSERT_NULL(exps[0].front->prev);
-	TEST_ASSERT_NULL(exps[0].back->next);
-	TEST_ASSERT_EQUAL_STRING("foo", exps[0].back->data);
+	check_if_exps_contains_single_list_with_single_node("foo");
 }
 
 void test_split_expression_should_handle_precending_separator(void)
 {
 	List_push_back(ex, ";");
 	List_push_back(ex, "foo");
-
 	split_expression(ex, &exps, &exps_size);
-
-	TEST_ASSERT_EQUAL(1, exps_size);
-	TEST_ASSERT_NOT_NULL(exps[0].front);
-	TEST_ASSERT_NOT_NULL(exps[0].back);
-	TEST_ASSERT_EQUAL_PTR(exps[0].front, exps[0].back);
-	TEST_ASSERT_NULL(exps[0].front->prev);
-	TEST_ASSERT_NULL(exps[0].back->next);
-	TEST_ASSERT_EQUAL_STRING("foo", exps[0].back->data);
+	check_if_exps_contains_single_list_with_single_node("foo");
 }
 
 int main(void)
