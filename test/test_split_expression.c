@@ -122,6 +122,39 @@ void test_split_expression_should_handle_precending_separator(void)
 	check_if_exps_contains_single_list_with_single_node("foo");
 }
 
+void test_split_expression_should_handle_inner_adjacent_separators(void)
+{
+	List_push_back(ex, "foo");
+	List_push_back(ex, ";");
+	List_push_back(ex, ";");
+	List_push_back(ex, ";");
+	List_push_back(ex, "bar");
+	split_expression(ex, &exps, &exps_size);
+	TEST_ASSERT_EQUAL(2, exps_size);
+	TEST_ASSERT_EQUAL_STRING("foo", exps[0].front->data);
+	TEST_ASSERT_EQUAL_STRING("bar", exps[1].front->data);
+}
+
+void test_split_expression_should_handle_trailing_adjacent_separators(void)
+{
+	List_push_back(ex, "foo");
+	List_push_back(ex, ";");
+	List_push_back(ex, ";");
+	List_push_back(ex, ";");
+	split_expression(ex, &exps, &exps_size);
+	check_if_exps_contains_single_list_with_single_node("foo");
+}
+
+void test_split_expression_should_handle_precending_adjacent_separators(void)
+{
+	List_push_back(ex, ";");
+	List_push_back(ex, ";");
+	List_push_back(ex, ";");
+	List_push_back(ex, "foo");
+	split_expression(ex, &exps, &exps_size);
+	check_if_exps_contains_single_list_with_single_node("foo");
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -132,5 +165,8 @@ int main(void)
 	RUN_TEST(test_split_expression_if_separators_are_presented);
 	RUN_TEST(test_split_expression_should_handle_trailing_separator);
 	RUN_TEST(test_split_expression_should_handle_precending_separator);
+	RUN_TEST(test_split_expression_should_handle_inner_adjacent_separators);
+	RUN_TEST(test_split_expression_should_handle_trailing_adjacent_separators);
+	RUN_TEST(test_split_expression_should_handle_precending_adjacent_separators);
 	return UNITY_END();
 }

@@ -137,13 +137,24 @@ int split_expression(List *exp, List **exps, size_t *exps_len)
 	if (*exps == NULL) return -1;
 	size_t capacity = 8, idx = 0;
 
-	if (exp && exp->front && strcmp(exp->front->data, ";") == 0)
+	// Remove precending separators.
+	while (exp && exp->front && strcmp(exp->front->data, ";") == 0)
 	{
 		exp->front = exp->front->next;
 		free(exp->front->prev->data);
 		free(exp->front->prev);
 		exp->front->prev = NULL;
 	}
+
+	// Remove trailing separators.
+	while (exp && exp->back && strcmp(exp->back->data, ";") == 0)
+	{
+		exp->back = exp->back->prev;
+		free(exp->back->next->data);
+		free(exp->back->next);
+		exp->back->next = NULL;
+	}
+
 	(*exps)[0].front = exp->front;
 	Node *node = exp->front;
 
@@ -158,25 +169,25 @@ int split_expression(List *exp, List **exps, size_t *exps_len)
 				capacity *= 2;
 			}
 			
-			if (node == exp->back)
+			size_t num_of_sep = 1;
+			Node *tmp = node->next;
+			while (strcmp(tmp->data, ";") == 0)
 			{
-				exp->back = exp->back->prev;
-				free(exp->back->next->data);
-				free(exp->back->next);
-				exp->back->next = NULL;
-				node = NULL;
+				++num_of_sep;
+				tmp = tmp->next;
 			}
-			else
+
+			(*exps)[idx].back = node->prev;
+			(*exps)[idx].back->next = NULL;
+			for (size_t i = 0; i < num_of_sep; ++i)
 			{
-				(*exps)[idx].back = node->prev;
-				(*exps)[idx+1].front = node->next;
 				node = node->next;
 				free(node->prev->data);
 				free(node->prev);
-				(*exps)[idx].back->next = NULL;
-				(*exps)[idx+1].front->prev = NULL;
-				++idx;
 			}
+			(*exps)[idx+1].front = node;
+			(*exps)[idx+1].front->prev = NULL;
+			++idx;
 		}
 		else
 		{
