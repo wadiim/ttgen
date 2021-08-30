@@ -1,10 +1,22 @@
 #include "logic.h"
+#include "stack.h"
 #include "utils.h"
 
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+
+int str_to_operator_idx(const char* name, const Operator ops[],
+		size_t ops_len)
+{
+	if (name == NULL) return -1;
+	for (int i = 0; i < ops_len; ++i)
+	{
+		if (strcmp(name, ops[i].name) == 0) return i;
+	}
+	return -2;
+}
 
 List * tokenize(const char *str)
 {
@@ -196,6 +208,84 @@ int split_expression(List *exp, List **exps, size_t *exps_len)
 	}
 	(*exps)[idx].back = exp->back;
 	*exps_len = idx + 1;
+
+	return 0;
+}
+
+int infix_to_postfix(const List *exp, const Operator ops[],
+		size_t ops_len, Queue **postfix)
+{
+	if (exp == NULL)
+	{
+		postfix = NULL;
+		return -1;
+	}
+
+	*postfix = Queue_new();
+	Stack *op_stack = Stack_new();
+
+	for (Node *token = exp->front; token; token = token->next)
+	{
+		if (strcmp(token->data, "(") == 0)
+		{
+			Stack_push(op_stack, token->data);
+		}
+		else if (strcmp(token->data, ")") == 0)
+		{
+			while (op_stack->size > 0 && strcmp(Stack_top(op_stack), "(") != 0)
+			{
+				Queue_push(*postfix, Stack_pop(op_stack));
+			}
+			if (op_stack->size == 0)
+			{
+				// Too few opening parentheses.
+				Stack_free(op_stack);
+				return -1;
+			}
+			Stack_pop(op_stack);
+		}
+		else
+		{
+			int curr_op_idx = str_to_operator_idx(
+					token->data, ops, ops_len);
+			if (curr_op_idx >= 0)
+			{
+				// Handle operator.
+				int top_op_idx;
+				while (true)
+				{
+					top_op_idx = str_to_operator_idx(Stack_top(op_stack), ops, ops_len);
+					if (top_op_idx >= 0 && (ops[top_op_idx].precedence < ops[curr_op_idx].precedence || ops[top_op_idx].precedence == ops[curr_op_idx].precedence && ops[curr_op_idx].associativity == LEFT_ASSOC))
+					{
+						Queue_push(*postfix, Stack_pop(op_stack));
+					}
+					else
+					{
+						break;
+					}
+				}
+				Stack_push(op_stack, token->data);
+			}
+			else
+			{
+				// Handle variable.
+				Queue_push(*postfix, token->data);
+			}
+		}
+	}
+
+	while (op_stack->size > 0)
+	{
+		if (strcmp(Stack_top(op_stack), "(") == 0
+				|| strcmp(Stack_top(op_stack), ")") == 0)
+		{
+			// Mismatched parentheses.
+			Stack_free(op_stack);
+			return -2;
+		}
+		Queue_push(*postfix, Stack_pop(op_stack));
+	}
+	Stack_free(op_stack);
 
 	return 0;
 }

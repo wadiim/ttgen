@@ -2,6 +2,7 @@
 #define LOGIC_H
 
 #include "list.h"
+#include "queue.h"
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -36,6 +37,13 @@ typedef struct
 } Operator;
 
 /*
+ * Returns an index of the operator with a name matching 'name' or -1
+ * if there is no such operator.
+ */
+int str_to_operator_idx(const char* name, const Operator ops[],
+		size_t ops_len);
+
+/*
  * Tokenizes the 'str' string.
  * The tokens are: '(', ')', ';', integers, and words (i.e. alphanumeric
  * sequences starting with non-digit).
@@ -68,5 +76,13 @@ bool update_variables(Variable vars[], size_t vars_len);
  * Returns zero on success and non-zero value on error.
  */
 int split_expression(List *exp, List **exps, size_t *exps_len);
+
+/*
+ * Converts 'exp' from infix to postfix notation (more specifically
+ * the Reverse Polish notation) using Shunting-yard algorithm.
+ * Returns zero on success and non-zero value on error.
+ */
+int infix_to_postfix(const List *exp, const Operator ops[],
+		size_t ops_len, Queue **postfix);
 
 #endif /* LOGIC_H */
