@@ -18,6 +18,17 @@ int str_to_operator_idx(const char* name, const Operator ops[],
 	return -2;
 }
 
+int str_to_variable_idx(const char *name, const Variable vars[],
+		size_t vars_len)
+{
+	if (name == NULL) return -1;
+	for (int i = 0; i < vars_len; ++i)
+	{
+		if (strcmp(name, vars[i].name) == 0) return i;
+	}
+	return -2;
+}
+
 List * tokenize(const char *str)
 {
 	size_t token_len = 0;
@@ -288,4 +299,28 @@ int infix_to_postfix(const List *exp, const Operator ops[],
 	Stack_free(op_stack);
 
 	return 0;
+}
+
+List * evaluate_expression(const List *exp, const Variable vars[],
+		size_t vars_len)
+{
+	if (exp == NULL) return NULL;
+
+	List *ret = List_new();
+
+	for (Node *node = exp->front; node; node = node->next)
+	{
+		int idx = str_to_variable_idx(node->data, vars, vars_len);
+		if (idx >= 0)
+		{
+			char *val = char_to_str('0' + vars[idx].value);
+			List_push_back(ret, val);
+		}
+		else
+		{
+			List_push_back(ret, node->data);
+		}
+	}
+
+	return ret;
 }

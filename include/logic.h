@@ -44,6 +44,14 @@ int str_to_operator_idx(const char* name, const Operator ops[],
 		size_t ops_len);
 
 /*
+ * Returns the index of the variable with a name matching 'name' or
+ * negative value if there is no such variable. Treats the variable
+ * names as case sensitive.
+ */
+int str_to_variable_idx(const char *name, const Variable vars[],
+		size_t vars_len);
+
+/*
  * Tokenizes the 'str' string.
  * The tokens are: '(', ')', ';', integers, and words (i.e. alphanumeric
  * sequences starting with non-digit).
@@ -84,5 +92,12 @@ int split_expression(List *exp, List **exps, size_t *exps_len);
  */
 int infix_to_postfix(const List *exp, const Operator ops[],
 		size_t ops_len, Queue **postfix);
+
+/*
+ * Returns evaluated 'exp', i.e. an expression in which all variable
+ * names are replaced with their values.
+ */
+List * evaluate_expression(const List *exp, const Variable vars[],
+		size_t vars_len);
 
 #endif /* LOGIC_H */
