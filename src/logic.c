@@ -324,3 +324,45 @@ List * evaluate_expression(const List *exp, const Variable vars[],
 
 	return ret;
 }
+
+char * expression_to_str(const List *exp)
+{
+	if (exp == NULL) return NULL;
+
+	char *ret;
+	if (exp->back == NULL || exp->back->data == NULL)
+	{
+		ret = malloc(sizeof(char));
+		ret[0] = '\0';
+	}
+	else
+	{
+		ret = malloc(64*sizeof(char));
+		size_t capacity = 64;
+		size_t ret_len = 0;
+
+		for (Node *node = exp->front; node; node = node->next)
+		{
+			size_t token_len = strlen(node->data);
+			while (token_len + 2 >= capacity - ret_len)
+			{
+				char *tmp = realloc(ret,
+						2*capacity*sizeof(char));
+				if (tmp == NULL) return NULL;
+				ret = tmp;
+				capacity *= 2;
+			}
+			if (ret_len > 0 && strcmp(")", node->data) != 0
+					&& strcmp("(", node->prev->data)
+					!= 0)
+			{
+				strcpy(ret + ret_len, " ");
+				++ret_len;
+			}
+			strcpy(ret + ret_len, node->data);
+			ret_len += token_len;
+		}
+	}
+
+	return ret;
+}

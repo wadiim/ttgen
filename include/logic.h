@@ -101,4 +101,11 @@ int infix_to_postfix(const List *exp, const Operator ops[],
 List * evaluate_expression(const List *exp, const Variable vars[],
 		size_t vars_len);
 
+/*
+ * Returns the string representation of the 'exp' expression on
+ * success and null on error. The returned string is dynamically
+ * allocated, null-terminated, and should be freed by the caller.
+ */
+char * expression_to_str(const List *exp);
+
 #endif /* LOGIC_H */

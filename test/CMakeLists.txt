@@ -4,6 +4,9 @@ target_include_directories(unity PUBLIC unity)
 add_executable(test_evaluate_expression test_evaluate_expression.c)
 target_link_libraries(test_evaluate_expression logic unity)
 
+add_executable(test_expression_to_str test_expression_to_str.c)
+target_link_libraries(test_expression_to_str logic unity)
+
 add_executable(test_get_variables test_get_variables.c)
 target_link_libraries(test_get_variables logic unity)
 
