@@ -249,6 +249,56 @@ void test_infix_to_postfix_should_return_non_zero_value_if_too_few_closing_paren
 	TEST_ASSERT_NOT_EQUAL_INT(0, infix_to_postfix(ex, ops, ops_len, &postfix));
 }
 
+void test_infix_to_postfix_should_handle_lowercase_operators(void)
+{
+	List_push_back(ex, "(");
+	List_push_back(ex, "foo");
+	List_push_back(ex, "or");
+	List_push_back(ex, "bar");
+	List_push_back(ex, ")");
+	List_push_back(ex, "and");
+	List_push_back(ex, "baz");
+
+	infix_to_postfix(ex, ops, ops_len, &postfix);
+
+	QNode *node = postfix->front;
+	TEST_ASSERT_EQUAL_STRING("foo", node->data);
+	node = node->next;
+	TEST_ASSERT_EQUAL_STRING("bar", node->data);
+	node = node->next;
+	TEST_ASSERT_EQUAL_STRING("or", node->data);
+	node = node->next;
+	TEST_ASSERT_EQUAL_STRING("baz", node->data);
+	node = node->next;
+	TEST_ASSERT_EQUAL_STRING("and", node->data);
+	node = node->next;
+}
+
+void test_infix_to_postfix_should_handle_mixedcase_operators(void)
+{
+	List_push_back(ex, "(");
+	List_push_back(ex, "foo");
+	List_push_back(ex, "Or");
+	List_push_back(ex, "bar");
+	List_push_back(ex, ")");
+	List_push_back(ex, "aND");
+	List_push_back(ex, "baz");
+
+	infix_to_postfix(ex, ops, ops_len, &postfix);
+
+	QNode *node = postfix->front;
+	TEST_ASSERT_EQUAL_STRING("foo", node->data);
+	node = node->next;
+	TEST_ASSERT_EQUAL_STRING("bar", node->data);
+	node = node->next;
+	TEST_ASSERT_EQUAL_STRING("Or", node->data);
+	node = node->next;
+	TEST_ASSERT_EQUAL_STRING("baz", node->data);
+	node = node->next;
+	TEST_ASSERT_EQUAL_STRING("aND", node->data);
+	node = node->next;
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -267,5 +317,7 @@ int main(void)
 	RUN_TEST(test_infix_to_postfix_should_handle_parentheses);
 	RUN_TEST(test_infix_to_postfix_should_return_non_zero_value_if_too_few_opening_parentheses);
 	RUN_TEST(test_infix_to_postfix_should_return_non_zero_value_if_too_few_closing_parentheses);
+	RUN_TEST(test_infix_to_postfix_should_handle_lowercase_operators);
+	RUN_TEST(test_infix_to_postfix_should_handle_mixedcase_operators);
 	return UNITY_END();
 }

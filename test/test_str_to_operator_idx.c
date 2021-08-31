@@ -24,11 +24,23 @@ void test_str_to_operator_idx_if_valid_operator(void)
 	TEST_ASSERT_EQUAL_INT(0, str_to_operator_idx("AND", ops, ops_len));
 }
 
+void test_str_to_operator_idx_should_handle_lowercase_operator(void)
+{
+	TEST_ASSERT_EQUAL_INT(0, str_to_operator_idx("and", ops, ops_len));
+}
+
+void test_str_to_operator_idx_should_handle_mixedcase_operator(void)
+{
+	TEST_ASSERT_EQUAL_INT(0, str_to_operator_idx("AnD", ops, ops_len));
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
 	RUN_TEST(test_str_to_operator_idx_if_null_name);
 	RUN_TEST(test_str_to_operator_idx_if_not_operator);
 	RUN_TEST(test_str_to_operator_idx_if_valid_operator);
+	RUN_TEST(test_str_to_operator_idx_should_handle_lowercase_operator);
+	RUN_TEST(test_str_to_operator_idx_should_handle_mixedcase_operator);
 	return UNITY_END();
 }

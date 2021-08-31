@@ -13,7 +13,7 @@ int str_to_operator_idx(const char* name, const Operator ops[],
 	if (name == NULL) return -1;
 	for (int i = 0; i < ops_len; ++i)
 	{
-		if (strcmp(name, ops[i].name) == 0) return i;
+		if (strcicmp(name, ops[i].name) == 0) return i;
 	}
 	return -2;
 }
