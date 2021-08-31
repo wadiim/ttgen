@@ -37,8 +37,9 @@ typedef struct
 } Operator;
 
 /*
- * Returns an index of the operator with a name matching 'name' or -1
- * if there is no such operator.
+ * Returns an index of the operator with a name matching 'name' or
+ * negative value if there is no such operator. Treats the operator
+ * names as case insensitive.
  */
 int str_to_operator_idx(const char *name, const Operator ops[],
 		size_t ops_len);
