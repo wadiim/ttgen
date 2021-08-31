@@ -40,7 +40,7 @@ typedef struct
  * Returns an index of the operator with a name matching 'name' or -1
  * if there is no such operator.
  */
-int str_to_operator_idx(const char* name, const Operator ops[],
+int str_to_operator_idx(const char *name, const Operator ops[],
 		size_t ops_len);
 
 /*
