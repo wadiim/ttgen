@@ -80,7 +80,7 @@ void test_split_expression_if_separators_are_presented(void)
 		TEST_ASSERT_NULL(exps[i].front->prev);
 		TEST_ASSERT_NULL(exps[i].back->next);
 
-		for (Node *n = exps[i].front; n != NULL; n = n->next)
+		for (LNode *n = exps[i].front; n != NULL; n = n->next)
 		{
 			TEST_ASSERT_NOT_NULL(n->data);
 			if (n != exps[i].back)

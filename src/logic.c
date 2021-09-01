@@ -95,7 +95,7 @@ int get_variables(const List *exp, const Operator ops[],
 	size_t capacity = 16;
 	size_t idx = 0;
 
-	Node* token = exp->front;
+	LNode* token = exp->front;
 	bool found;
 	while (token)
 	{
@@ -179,7 +179,7 @@ int split_expression(List *exp, List **exps, size_t *exps_len)
 	}
 
 	(*exps)[0].front = exp->front;
-	Node *node = exp->front;
+	LNode *node = exp->front;
 
 	while (node)
 	{
@@ -193,7 +193,7 @@ int split_expression(List *exp, List **exps, size_t *exps_len)
 			}
 			
 			size_t num_of_sep = 1;
-			Node *tmp = node->next;
+			LNode *tmp = node->next;
 			while (strcmp(tmp->data, ";") == 0)
 			{
 				++num_of_sep;
@@ -235,7 +235,7 @@ int infix_to_postfix(const List *exp, const Operator ops[],
 	*postfix = Queue_new();
 	Stack *op_stack = Stack_new();
 
-	for (Node *token = exp->front; token; token = token->next)
+	for (LNode *token = exp->front; token; token = token->next)
 	{
 		if (strcmp(token->data, "(") == 0)
 		{
@@ -308,7 +308,7 @@ List * evaluate_expression(const List *exp, const Variable vars[],
 
 	List *ret = List_new();
 
-	for (Node *node = exp->front; node; node = node->next)
+	for (LNode *node = exp->front; node; node = node->next)
 	{
 		int idx = str_to_variable_idx(node->data, vars, vars_len);
 		if (idx >= 0)
@@ -341,7 +341,7 @@ char * expression_to_str(const List *exp)
 		size_t capacity = 64;
 		size_t ret_len = 0;
 
-		for (Node *node = exp->front; node; node = node->next)
+		for (LNode *node = exp->front; node; node = node->next)
 		{
 			size_t token_len = strlen(node->data);
 			while (token_len + 2 >= capacity - ret_len)

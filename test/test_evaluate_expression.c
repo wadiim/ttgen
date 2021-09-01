@@ -70,7 +70,7 @@ void test_evaluate_expression_should_handle_complex_expression(void)
 
 	List *ret = evaluate_expression(ex, vars, vars_len);
 
-	Node *node = ret->front;
+	LNode *node = ret->front;
 	TEST_ASSERT_EQUAL_STRING("0", node->data);
 	node = node->next;
 	TEST_ASSERT_EQUAL_STRING("1", node->data);

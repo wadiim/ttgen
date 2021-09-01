@@ -125,7 +125,7 @@ void test_tokenize_should_treat_each_parenthesis_as_separate_token(void)
 	list = tokenize(str);
 	TEST_ASSERT_EQUAL(str_len, List_length(list));
 
-	Node *node = list->front;
+	LNode *node = list->front;
 	for (size_t i = 0; i < str_len && node; ++i)
 	{
 		TEST_ASSERT_EQUAL(1, strlen(node->data));
@@ -152,7 +152,7 @@ void test_tokenize_should_return_empty_list_if_str_contains_only_whitespaces(voi
 void test_tokenize_should_handle_expressions_separated_by_semicolons(void)
 {
 	list = tokenize("not foo; foo and bar; baz xor baz;");
-	Node *n = list->front;
+	LNode *n = list->front;
 	TEST_ASSERT_NOT_NULL(n);
 	TEST_ASSERT_EQUAL_STRING("not", n->data);
 	n = n->next;

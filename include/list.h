@@ -6,20 +6,20 @@
 /*
  * A doubly linked list node.
  */
-typedef struct Node
+typedef struct LNode
 {
 	char *data;
-	struct Node *prev;
-	struct Node *next;
-} Node;
+	struct LNode *prev;
+	struct LNode *next;
+} LNode;
 
 /*
  * A doubly linked list.
  */
 typedef struct List
 {
-	Node *front;
-	Node *back;
+	LNode *front;
+	LNode *back;
 } List;
 
 /*

@@ -13,7 +13,7 @@ List * List_new(void)
 
 void List_free(List *list)
 {
-	Node *tmp;
+	LNode *tmp;
 	while (list->front)
 	{
 		tmp = list->front;
@@ -25,7 +25,7 @@ void List_free(List *list)
 
 int List_push_back(List *list, const char *str)
 {
-	Node *node = malloc(sizeof(Node));
+	LNode *node = malloc(sizeof(LNode));
 	if (node == NULL) return -1;
 	node->data = malloc((strlen(str) + 1)*sizeof(char));
 	if (node->data == NULL) return -2;
@@ -58,7 +58,7 @@ int List_push_back_n(List *list, const char *str, size_t count)
 size_t List_length(const List *list)
 {
 	size_t len = 0;
-	for (Node *node = list->front; node != NULL; node = node->next)
+	for (LNode *node = list->front; node != NULL; node = node->next)
 	{
 		++len;
 	}
