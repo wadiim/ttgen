@@ -1,6 +1,9 @@
 add_library(unity STATIC unity/unity.c)
 target_include_directories(unity PUBLIC unity)
 
+add_executable(test_calculate test_calculate.c)
+target_link_libraries(test_calculate logic unity)
+
 add_executable(test_evaluate_expression test_evaluate_expression.c)
 target_link_libraries(test_evaluate_expression logic unity)
 

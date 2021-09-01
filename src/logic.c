@@ -7,6 +7,31 @@
 #include <stdlib.h>
 #include <string.h>
 
+bool logical_not(bool a)
+{
+	return !a;
+}
+
+bool logical_and(bool a, bool b)
+{
+	return a && b;
+}
+
+bool logical_or(bool a, bool b)
+{
+	return a || b;
+}
+
+bool logical_xor(bool a, bool b)
+{
+	return !(a == b);
+}
+
+bool logical_imply(bool a, bool b)
+{
+	return !a || b;
+}
+
 int str_to_operator_idx(const char* name, const Operator ops[],
 		size_t ops_len)
 {
@@ -363,6 +388,40 @@ char * expression_to_str(const List *exp)
 			ret_len += token_len;
 		}
 	}
+
+	return ret;
+}
+
+bool calculate(const List *exp, const Operator ops[], size_t ops_len)
+{
+	Stack *stack = Stack_new();
+
+	for (LNode *node = exp->front; node; node = node->next)
+	{
+		int op_idx =
+			str_to_operator_idx(node->data, ops, ops_len);
+		if (op_idx < 0)
+		{
+			Stack_push(stack, node->data);
+			continue;
+		}
+		else if (ops[op_idx].arity == 1)
+		{
+			bool x = !!atoi(Stack_pop(stack));
+			bool v = ops[op_idx].function.unary(x);
+			Stack_push(stack, v ? "1" : "0");
+		}
+		else if (ops[op_idx].arity == 2)
+		{
+			bool y = !!atoi(Stack_pop(stack));
+			bool x = !!atoi(Stack_pop(stack));
+			bool v = ops[op_idx].function.binary(x, y);
+			Stack_push(stack, v ? "1" : "0");
+		}
+	}
+
+	bool ret = stack->size ? !!atoi(Stack_pop(stack)) : 1;
+	Stack_free(stack);
 
 	return ret;
 }

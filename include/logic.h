@@ -37,6 +37,15 @@ typedef struct
 } Operator;
 
 /*
+ * Logical operations.
+ */
+bool logical_not(bool a);
+bool logical_and(bool a, bool b);
+bool logical_or(bool a, bool b);
+bool logical_xor(bool a, bool b);
+bool logical_imply(bool a, bool b);
+
+/*
  * Returns an index of the operator with a name matching 'name' or
  * negative value if there is no such operator. Treats the operator
  * names as case insensitive.
@@ -107,5 +116,11 @@ List * evaluate_expression(const List *exp, const Variable vars[],
  * allocated, null-terminated, and should be freed by the caller.
  */
 char * expression_to_str(const List *exp);
+
+/*
+ * Calculates the 'exp' logical expression and returns the result.
+ * 'exp' is expected to be in the evaluated postfix form.
+ */
+bool calculate(const List *exp, const Operator ops[], size_t ops_len);
 
 #endif /* LOGIC_H */
