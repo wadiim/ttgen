@@ -9,9 +9,9 @@ List *ex;
 
 Operator ops[] =
 {
-	{"NOT"},
-	{"AND"},
-	{"OR"}
+	{ .name = "NOT" },
+	{ .name = "AND" },
+	{ .name = "OR" }
 };
 size_t ops_len = sizeof(ops)/sizeof(ops[0]);
 
