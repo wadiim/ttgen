@@ -36,9 +36,9 @@ int str_to_operator_idx(const char* name, const Operator ops[],
 		size_t ops_len)
 {
 	if (name == NULL) return -1;
-	for (int i = 0; i < ops_len; ++i)
+	for (size_t i = 0; i < ops_len; ++i)
 	{
-		if (strcicmp(name, ops[i].name) == 0) return i;
+		if (strcicmp(name, ops[i].name) == 0) return (int)i;
 	}
 	return -2;
 }
@@ -47,9 +47,9 @@ int str_to_variable_idx(const char *name, const Variable vars[],
 		size_t vars_len)
 {
 	if (name == NULL) return -1;
-	for (int i = 0; i < vars_len; ++i)
+	for (size_t i = 0; i < vars_len; ++i)
 	{
-		if (strcmp(name, vars[i].name) == 0) return i;
+		if (strcmp(name, vars[i].name) == 0) return (int)i;
 	}
 	return -2;
 }
