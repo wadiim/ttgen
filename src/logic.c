@@ -291,7 +291,7 @@ int infix_to_postfix(const List *exp, const Operator ops[],
 				while (true)
 				{
 					top_op_idx = str_to_operator_idx(Stack_top(op_stack), ops, ops_len);
-					if (top_op_idx >= 0 && (ops[top_op_idx].precedence < ops[curr_op_idx].precedence || ops[top_op_idx].precedence == ops[curr_op_idx].precedence && ops[curr_op_idx].associativity == LEFT_ASSOC))
+					if (top_op_idx >= 0 && (ops[top_op_idx].precedence < ops[curr_op_idx].precedence || (ops[top_op_idx].precedence == ops[curr_op_idx].precedence && ops[curr_op_idx].associativity == LEFT_ASSOC)))
 					{
 						Queue_push(*postfix, Stack_pop(op_stack));
 					}
