@@ -94,6 +94,21 @@ void test_get_variables_should_handle_multiple_occurances_of_a_single_variable(v
 	TEST_ASSERT_EQUAL_STRING("bar", vars[1].name);
 }
 
+void test_get_variables_should_handle_a_compound_expression(void)
+{
+	List_push_back(ex, "foo");
+	List_push_back(ex, "AND");
+	List_push_back(ex, "bar");
+	List_push_back(ex, ";");
+	List_push_back(ex, "foo");
+	List_push_back(ex, "OR");
+	List_push_back(ex, "bar");
+	get_variables(ex, ops, ops_len, &vars, &vars_len);
+	TEST_ASSERT_EQUAL(2, vars_len);
+	TEST_ASSERT_EQUAL_STRING("foo", vars[0].name);
+	TEST_ASSERT_EQUAL_STRING("bar", vars[1].name);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -104,5 +119,6 @@ int main(void)
 	RUN_TEST(test_get_variables_should_store_variables_from_exp_in_vars_array);
 	RUN_TEST(test_get_variables_should_do_shallow_copy_of_var_names);
 	RUN_TEST(test_get_variables_should_handle_multiple_occurances_of_a_single_variable);
+	RUN_TEST(test_get_variables_should_handle_a_compound_expression);
 	return UNITY_END();
 }

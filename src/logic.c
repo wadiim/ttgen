@@ -127,7 +127,8 @@ int get_variables(const List *exp, const Operator ops[],
 		op_found = false;
 		for (size_t i = 0; i < ops_len; ++i)
 		{
-			if (strcmp(token->data, ops[i].name) == 0)
+			if (strcmp(token->data, ops[i].name) == 0
+					|| strcmp(token->data, ";") == 0)
 			{
 				op_found = true;
 				break;
