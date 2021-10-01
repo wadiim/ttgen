@@ -392,11 +392,11 @@ char * expression_to_str(const List *exp)
 	return ret;
 }
 
-bool calculate(const List *exp, const Operator ops[], size_t ops_len)
+bool calculate(const Queue *exp, const Operator ops[], size_t ops_len)
 {
 	Stack *stack = Stack_new();
 
-	for (LNode *node = exp->front; node; node = node->next)
+	for (QNode *node = exp->front; node; node = node->next)
 	{
 		int op_idx =
 			str_to_operator_idx(node->data, ops, ops_len);

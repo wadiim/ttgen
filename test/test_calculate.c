@@ -1,7 +1,7 @@
 #include "logic.h"
 #include "unity.h"
 
-List *ex;
+Queue *ex;
 
 Operator ops[] =
 {
@@ -15,12 +15,12 @@ size_t ops_len = 5;
 
 void setUp(void)
 {
-	ex = List_new();
+	ex = Queue_new();
 }
 
 void tearDown(void)
 {
-	List_free(ex);
+	Queue_free(ex);
 }
 
 void test_calculate_should_return_true_if_exp_is_null(void)
@@ -35,35 +35,35 @@ void test_calculate_should_return_true_if_exp_is_empty(void)
 
 void test_calculate_should_handle_single_value(void)
 {
-	List_push_back(ex, "0");
+	Queue_push(ex, "0");
 	TEST_ASSERT_EQUAL(0, calculate(ex, ops, ops_len));
 }
 
 void test_calculate_should_handle_unary_operator(void)
 {
-	List_push_back(ex, "0");
-	List_push_back(ex, "NOT");
+	Queue_push(ex, "0");
+	Queue_push(ex, "NOT");
 	TEST_ASSERT_EQUAL(1, calculate(ex, ops, ops_len));
 }
 
 void test_calculate_should_handle_binary_operator(void)
 {
-	List_push_back(ex, "0");
-	List_push_back(ex, "1");
-	List_push_back(ex, "AND");
+	Queue_push(ex, "0");
+	Queue_push(ex, "1");
+	Queue_push(ex, "AND");
 	TEST_ASSERT_EQUAL(0, calculate(ex, ops, ops_len));
 }
 
 void test_calculate_should_handle_multiple_operators(void)
 {
-	List_push_back(ex, "0");
-	List_push_back(ex, "NOT");
-	List_push_back(ex, "1");
-	List_push_back(ex, "AND");
-	List_push_back(ex, "0");
-	List_push_back(ex, "XOR");
-	List_push_back(ex, "0");
-	List_push_back(ex, "IMPLY");
+	Queue_push(ex, "0");
+	Queue_push(ex, "NOT");
+	Queue_push(ex, "1");
+	Queue_push(ex, "AND");
+	Queue_push(ex, "0");
+	Queue_push(ex, "XOR");
+	Queue_push(ex, "0");
+	Queue_push(ex, "IMPLY");
 	TEST_ASSERT_EQUAL(0, calculate(ex, ops, ops_len));
 }
 

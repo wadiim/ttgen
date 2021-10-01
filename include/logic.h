@@ -121,6 +121,6 @@ char * expression_to_str(const List *exp);
  * Calculates the 'exp' logical expression and returns the result.
  * 'exp' is expected to be in the evaluated postfix form.
  */
-bool calculate(const List *exp, const Operator ops[], size_t ops_len);
+bool calculate(const Queue *exp, const Operator ops[], size_t ops_len);
 
 #endif /* LOGIC_H */
