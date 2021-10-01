@@ -121,31 +121,43 @@ int get_variables(const List *exp, const Operator ops[],
 	size_t idx = 0;
 
 	LNode* token = exp->front;
-	bool found;
+	bool op_found;
 	while (token)
 	{
-		found = false;
+		op_found = false;
 		for (size_t i = 0; i < ops_len; ++i)
 		{
 			if (strcmp(token->data, ops[i].name) == 0)
 			{
-				found = true;
+				op_found = true;
 				break;
 			}
 		}
 
-		if (found == false)
+		if (op_found == false)
 		{
-			if (idx >= capacity-1)
+			bool var_found = false;
+			for (size_t i = 0; i < idx; ++i)
 			{
-				*vars = realloc(*vars,
-						2*capacity*sizeof(Variable));
-				if (*vars == NULL) return -3;
-				capacity *= 2;
+				if (strcmp(token->data, (*vars)[i].name) == 0)
+				{
+					var_found = true;
+					break;
+				}
 			}
-			(*vars)[idx].name = token->data;
-			(*vars)[idx].value = 0;
-			++idx;
+			if (var_found == false)
+			{
+				if (idx >= capacity-1)
+				{
+					*vars = realloc(*vars,
+							2*capacity*sizeof(Variable));
+					if (*vars == NULL) return -3;
+					capacity *= 2;
+				}
+				(*vars)[idx].name = token->data;
+				(*vars)[idx].value = 0;
+				++idx;
+			}
 		}
 
 		token = token->next;
