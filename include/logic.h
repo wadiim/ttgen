@@ -107,7 +107,7 @@ int infix_to_postfix(const List *exp, const Operator ops[],
  * Returns evaluated 'exp', i.e. an expression in which all variable
  * names are replaced with their values.
  */
-List * evaluate_expression(const List *exp, const Variable vars[],
+Queue * evaluate_expression(const Queue *exp, const Variable vars[],
 		size_t vars_len);
 
 /*

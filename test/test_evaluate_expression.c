@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-List *ex;
+Queue *ex;
 
 Variable vars[] =
 {
@@ -14,12 +14,12 @@ size_t vars_len = 2;
 
 void setUp(void)
 {
-	ex = List_new();
+	ex = Queue_new();
 }
 
 void tearDown(void)
 {
-	List_free(ex);
+	Queue_free(ex);
 }
 
 void test_evaluate_expression_should_return_null_if_exp_is_null(void)
@@ -29,7 +29,7 @@ void test_evaluate_expression_should_return_null_if_exp_is_null(void)
 
 void test_evaluate_expression_should_return_empty_list_if_exp_is_empty(void)
 {
-	List *ret = evaluate_expression(ex, vars, vars_len);
+	Queue *ret = evaluate_expression(ex, vars, vars_len);
 	TEST_ASSERT_NOT_NULL(ret);
 	TEST_ASSERT_NULL(ret->front);
 	TEST_ASSERT_NULL(ret->back);
@@ -38,8 +38,8 @@ void test_evaluate_expression_should_return_empty_list_if_exp_is_empty(void)
 
 void test_evaluate_expression_should_handle_single_operator(void)
 {
-	List_push_back(ex, "NOT");
-	List *ret = evaluate_expression(ex, vars, vars_len);
+	Queue_push(ex, "NOT");
+	Queue *ret = evaluate_expression(ex, vars, vars_len);
 	TEST_ASSERT_NOT_NULL(ret);
 	TEST_ASSERT_NOT_NULL(ret->front);
 	TEST_ASSERT_NOT_NULL(ret->back);
@@ -50,8 +50,8 @@ void test_evaluate_expression_should_handle_single_operator(void)
 
 void test_evaluate_expression_should_handle_single_variable(void)
 {
-	List_push_back(ex, "foo");
-	List *ret = evaluate_expression(ex, vars, vars_len);
+	Queue_push(ex, "foo");
+	Queue *ret = evaluate_expression(ex, vars, vars_len);
 	TEST_ASSERT_NOT_NULL(ret);
 	TEST_ASSERT_NOT_NULL(ret->front);
 	TEST_ASSERT_NOT_NULL(ret->back);
@@ -62,15 +62,15 @@ void test_evaluate_expression_should_handle_single_variable(void)
 
 void test_evaluate_expression_should_handle_complex_expression(void)
 {
-	List_push_back(ex, "foo");
-	List_push_back(ex, "bar");
-	List_push_back(ex, "AND");
-	List_push_back(ex, "foo");
-	List_push_back(ex, "XOR");
+	Queue_push(ex, "foo");
+	Queue_push(ex, "bar");
+	Queue_push(ex, "AND");
+	Queue_push(ex, "foo");
+	Queue_push(ex, "XOR");
 
-	List *ret = evaluate_expression(ex, vars, vars_len);
+	Queue *ret = evaluate_expression(ex, vars, vars_len);
 
-	LNode *node = ret->front;
+	QNode *node = ret->front;
 	TEST_ASSERT_EQUAL_STRING("0", node->data);
 	node = node->next;
 	TEST_ASSERT_EQUAL_STRING("1", node->data);

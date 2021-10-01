@@ -326,24 +326,24 @@ int infix_to_postfix(const List *exp, const Operator ops[],
 	return 0;
 }
 
-List * evaluate_expression(const List *exp, const Variable vars[],
+Queue * evaluate_expression(const Queue *exp, const Variable vars[],
 		size_t vars_len)
 {
 	if (exp == NULL) return NULL;
 
-	List *ret = List_new();
+	Queue *ret = Queue_new();
 
-	for (LNode *node = exp->front; node; node = node->next)
+	for (QNode *node = exp->front; node; node = node->next)
 	{
 		int idx = str_to_variable_idx(node->data, vars, vars_len);
 		if (idx >= 0)
 		{
 			char *val = char_to_str('0' + vars[idx].value);
-			List_push_back(ret, val);
+			Queue_push(ret, val);
 		}
 		else
 		{
-			List_push_back(ret, node->data);
+			Queue_push(ret, node->data);
 		}
 	}
 
