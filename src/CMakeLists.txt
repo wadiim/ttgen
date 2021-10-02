@@ -7,3 +7,4 @@ add_library(logic logic.c)
 target_link_libraries(logic list queue stack utils)
 
 add_executable(ttgen main.c)
+target_link_libraries(ttgen logic)
