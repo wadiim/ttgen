@@ -3,7 +3,7 @@
 A truth table generator.
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/33803413/135724542-aef22eff-f7fb-4008-a8ce-69732d65e634.png" />
+  <img src="https://user-images.githubusercontent.com/33803413/135889691-8e9e4305-a180-4595-ae26-fc41aaf68cc4.png" />
 </p>
 
 ## Building
@@ -33,6 +33,7 @@ AND | 2 | 2 | left-to-right
 OR | 3 | 2 | left-to-right
 XOR | 4 | 2 | left-to-right
 IMPLY | 5 | 2 | right-to-left
+XNOR | 6 | 2 | right-to-left
 
 ## License
 
