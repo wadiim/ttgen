@@ -32,6 +32,11 @@ bool logical_imply(bool a, bool b)
 	return !a || b;
 }
 
+bool logical_xnor(bool a, bool b)
+{
+	return a == b;
+}
+
 int str_to_operator_idx(const char* name, const Operator ops[],
 		size_t ops_len)
 {

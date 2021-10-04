@@ -44,6 +44,7 @@ bool logical_and(bool a, bool b);
 bool logical_or(bool a, bool b);
 bool logical_xor(bool a, bool b);
 bool logical_imply(bool a, bool b);
+bool logical_xnor(bool a, bool b);
 
 /*
  * Returns an index of the operator with a name matching 'name' or

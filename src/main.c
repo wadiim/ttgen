@@ -62,9 +62,16 @@ int main(void)
 			.arity = 2,
 			.associativity = RIGHT_ASSOC,
 			.function.binary = logical_imply
+		},
+		{
+			.name = "XNOR",
+			.precedence = 6,
+			.arity = 2,
+			.associativity = RIGHT_ASSOC,
+			.function.binary = logical_xnor
 		}
 	};
-	size_t ops_len = 5;
+	size_t ops_len = 6;
 
 	while (true)
 	{
